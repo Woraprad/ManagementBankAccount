@@ -10,44 +10,64 @@ namespace ConsoleApp6
     {
         static void Main(string[] args)
         {
-            Account ac = new Account("qwert1234", 10000);
+
+            Account ac = new Account("qwert1234", 5000, 300);
             ac.Display();
-            ac.Debit(300);
+            ac.Buy(5200);
             ac.Display();
-            ac.Credit(5000);
-            ac.Debit(20000);
-            ac.Display();
+
         }
     }
 
     public class Account
     {
         private string accountName;
-        private int accountBalance;
-        private int creditBalance;
+        private int credit;
+        private int debit;
 
-        public void Credit(int amount)
+        public void Credit(int credit)
         {
-            Console.WriteLine("Credit {0} bath", amount);
-            creditBalance += amount;
+            Console.WriteLine("Credit Limit {0} bath", credit);
         }
-        public void Debit(int amount)
+        public void Debit(int debit)
         {
-            if (amount > accountBalance)
-                Console.WriteLine("Sorry, there is not enough money");
+            Console.WriteLine("Debit have {0} bath", debit);
+        }
+        public void Buy(int buy)
+        {
+            if (credit >= buy)
+            {
+                credit = credit - buy;
+            }
             else
-                accountBalance -= amount;
+            {
+                Console.Write("Select 1 Credit Card , 2 Debit Card : ");
+                int w = Convert.ToInt32(Console.ReadLine());
+                switch (w)
+                {
+                    case 1:
+                        debit = debit - (buy - credit);
+                        credit = 0;
+                        break;
+                    case 2:
+                        Console.WriteLine("You");
+                        credit = credit - (buy - debit);
+                        debit = 0;
+                        break;
+                }
+            }
         }
-        public void Display()
+            public void Display()
         {
-            Console.WriteLine("Name: {0}, Balance: {1 , 20:C}", 
-                accountName, accountBalance);
+            Console.WriteLine("Name: {0}, Balance: Credit = {1,10:C} , Debit = {2,10:C}", accountName, credit, debit);
         }
 
-        public Account(string accountName, int amount)
+        public Account(string accountName, int credit, int debit)
         {
             this.accountName = accountName;
-            accountBalance = amount;
+            this.credit = credit;
+            this.debit = debit;
+
         }
 
 
